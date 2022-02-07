@@ -1,7 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const api = require("./api");
+const Api = require("./api");
+
 const app = express();
+const api = new Api();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -10,11 +12,19 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
+app.get("/:id", (req, res) => {
+  const id = req.params.id;
+
+  const url = api.get(id);
+  res.send(url);
+});
+
 app.post("/shorten", (req, res) => {
+  console.log("::POST /shorten");
   const url = req.body.url;
 
   if (!url) {
-    console.error("missing url in /shorten");
+    console.error("::Missing url in /shorten");
     res.json({
       error: "provide url",
     });
@@ -26,5 +36,5 @@ app.post("/shorten", (req, res) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-  console.log("listening on " + port);
+  console.log("::listening on " + port);
 });
