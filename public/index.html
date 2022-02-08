@@ -45,6 +45,17 @@
         hash.style.visibility = "visible";
       }
 
+      hash.addEventListener("click", () => {
+        const link = hash.innerText;
+        hash.innerText = "Copied to clipboard!";
+        hash.style.backgroundColor = "lightgreen";
+        navigator.clipboard.writeText(link);
+        setTimeout(() => {
+          hash.style.backgroundColor = "white";
+          hash.innerText = link;
+        }, 1000);
+      });
+
       button.addEventListener("click", handleSubmit);
       input.addEventListener("keyup", (event) => {
         if (event.keyCode === 13) {
