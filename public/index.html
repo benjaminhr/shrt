@@ -37,7 +37,7 @@
 
         const response = await request.text();
         const origin = window.location.origin;
-        const fullURL = origin + "/" + response;
+        const fullURL = origin + "/shorten/" + response;
         hash.innerText = fullURL;
 
         button.innerText = "🔑";
@@ -53,7 +53,7 @@
         setTimeout(() => {
           hash.style.backgroundColor = "white";
           hash.innerText = link;
-        }, 1000);
+        }, 600);
       });
 
       button.addEventListener("click", handleSubmit);
