@@ -16,6 +16,12 @@ app.get("/:id", (req, res) => {
   const id = req.params.id;
 
   api.get(id, (urlObject) => {
+    if (!urlObject.length) {
+      return res.json({
+        error: "no site found with id " + id,
+      });
+    }
+
     let url = urlObject[0].url;
 
     if (!url.startsWith("http")) {
