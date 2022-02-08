@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shrtn</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <h2 id="title">shrtn</h2>
+    <div id="inputs">
+      <input type="text" id="url-input" autofocus />
+      <button id="submit">🔒</button>
+      <p id="hash"></p>
+    </div>
+
+    <script>
+      const input = document.querySelector("#url-input");
+      const button = document.querySelector("#submit");
+      const hash = document.querySelector("#hash");
+
+      async function handleSubmit() {
+        if (input.value === "") {
+          return;
+        }
+
+        const request = await fetch("/shorten", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            url: input.value,
+          }),
+        });
+
+        const response = await request.text();
+        const origin = window.location.origin;
+        const fullURL = origin + "/" + response;
+        hash.innerText = fullURL;
+
+        button.innerText = "🔑";
+        button.style.backgroundColor = "lightgreen";
+        hash.style.visibility = "visible";
+      }
+
+      button.addEventListener("click", handleSubmit);
+      input.addEventListener("keyup", (event) => {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          handleSubmit();
+        }
+      });
+    </script>
+  </body>
+</html>

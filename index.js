@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const Api = require("./api");
@@ -7,12 +8,13 @@ const api = new Api();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.send("hello");
+app.get("/ping", (req, res) => {
+  res.send("pong");
 });
 
-app.get("/:id", (req, res) => {
+app.get("/shorten/:id", (req, res) => {
   const id = req.params.id;
 
   api.get(id, (urlObject) => {
