@@ -78,15 +78,16 @@ class Api {
     });
   }
 
-  get(id) {
+  get(id, cb) {
     this.connection.changeUser({ database: "urls" }, (err) => {
       if (err) throw err;
 
       this.connection.query(
-        "SELECT url FROM urls WHERE id='${id}'",
+        `SELECT url FROM urls WHERE id='${id}'`,
         (err, result) => {
           if (err) throw err;
           console.log("::Got url from urls table");
+          cb(result);
         }
       );
     });

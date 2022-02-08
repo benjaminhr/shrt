@@ -15,8 +15,16 @@ app.get("/", (req, res) => {
 app.get("/:id", (req, res) => {
   const id = req.params.id;
 
-  const url = api.get(id);
-  res.send(url);
+  api.get(id, (urlObject) => {
+    let url = urlObject[0].url;
+
+    if (!url.startsWith("http")) {
+      url = "https://" + url;
+    }
+
+    console.log("::redirecting to: " + url);
+    res.redirect(url);
+  });
 });
 
 app.post("/shorten", (req, res) => {
@@ -31,7 +39,7 @@ app.post("/shorten", (req, res) => {
   }
 
   const shortenedURL = api.shorten(url);
-  res.send("got " + shortenedURL);
+  res.send(shortenedURL);
 });
 
 const port = process.env.PORT || 8080;
